@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Roles from "./pages/Roles";
+import RolesProvider from "./context/RolesProvider";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <RolesProvider>
+      <RouterProvider router={router} />
+    </RolesProvider>
   </StrictMode>
 );
