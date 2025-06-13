@@ -6,6 +6,7 @@ import computerImage from "../../public/assets/computer.png";
 
 export default function Roles() {
   const { setRole } = useRoleContext();
+
   return (
     <div className="flex flex-col items-center">
       <div className="navigation pt-[13px] px-[35px] flex items-center w-full justify-between">
@@ -28,7 +29,10 @@ export default function Roles() {
           </p>
         </div>
         <div className="roles-boxes flex items-center gap-[37.22px] mt-[49px]">
-          <div className="box1 flex flex-col items-center gap-[20px]">
+          <div
+            onClick={() => setRole("store")}
+            className="box1 flex flex-col items-center gap-[20px]"
+          >
             <div className="bacground flex flex-col items-center justify-center w-[258px] h-[298px] rounded-[14px] bg-[#251B03]">
               <img src={storeImage} alt="store image" />
             </div>
@@ -36,7 +40,10 @@ export default function Roles() {
               <p className="text-[#FFD451] text-[14px] font-normal">Store</p>
             </div>
           </div>
-          <div className="box2 flex flex-col items-center gap-[20px]">
+          <div
+            onClick={() => setRole("courier")}
+            className="box2 flex flex-col items-center gap-[20px]"
+          >
             <div className="bacground flex flex-col items-center justify-center w-[258px] h-[298px] rounded-[14px] bg-[#251B03]">
               <img src={scooterImage} alt="scooter image" />
             </div>
@@ -44,7 +51,10 @@ export default function Roles() {
               <p className="text-[#FFD451] text-[14px] font-normal">Courier</p>
             </div>
           </div>
-          <div className="box3 flex flex-col items-center gap-[20px]">
+          <div
+            onClick={() => setRole("admin")}
+            className="box3 flex flex-col items-center gap-[20px]"
+          >
             <div className="bacground flex flex-col items-center justify-center w-[258px] h-[298px] rounded-[14px] bg-[#251B03]">
               <img src={computerImage} alt="computer image" />
             </div>
