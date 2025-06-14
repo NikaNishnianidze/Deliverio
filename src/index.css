@@ -22,3 +22,31 @@ body {
   background-size: 380px 421px;
   background-position: -40px 54px;
 }
+
+.cont2 {
+  background-image: url(/public/assets/couriersMobile.png);
+  background-repeat: no-repeat;
+  background-position: 0px 176px;
+}
+
+.cont3 {
+  background-image: url(/public/assets/laptopMobile.png);
+  background-repeat: no-repeat;
+  background-position: 40px 176px;
+}
+
+@media screen and (min-width: 1440px) {
+  .cont1 {
+    background-image: url(/public/assets/storedesktop.png);
+    background-size: 876px 800px;
+    background-position: 288px -125px;
+  }
+  .cont2 {
+    background-image: url(/public/assets/couriersDekstop.png);
+    background-position: 0px 228px;
+  }
+  .cont3 {
+    background-image: url(/public/assets/laptopDesktop.png);
+    background-position: 810px 95px;
+  }
+}
