@@ -3,10 +3,22 @@
 
 @theme {
   --color-about: rgba(255, 255, 255, 0.2);
+
+  --shadow-getstarted: 0px 0px 27.587px 0px rgba(0, 0, 0, 0.25);
+
+  --breakpoint-mb: 375px;
+  --breakpoint-dk: 1440px;
 }
 
 body {
   background-color: #000;
   min-height: 100vh;
   font-family: "Poppins", sans-serif;
+}
+
+.cont1 {
+  background-image: url(/public/assets/storemobile.png);
+  background-repeat: no-repeat;
+  background-size: 380px 421px;
+  background-position: -40px 54px;
 }
