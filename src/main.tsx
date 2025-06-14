@@ -5,15 +5,21 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Roles from "./pages/Roles";
 import RolesProvider from "./context/RolesProvider";
 import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
+import LandginPage from "./pages/LandingPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Roles />,
+    element: <LandginPage />,
   },
   {
-    path: "signup",
+    path: "/signup",
     element: <SignUp />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);
 

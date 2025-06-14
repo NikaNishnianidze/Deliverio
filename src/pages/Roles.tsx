@@ -9,15 +9,15 @@ export default function Roles() {
   const { setRole } = useRoleContext();
   const navigate = useNavigate();
   const adminChecked = () => {
-    setRole("admin");
+    setRole("Admin");
     navigate("signup");
   };
   const courierChecked = () => {
-    setRole("courier");
+    setRole("Courier");
     navigate("signup");
   };
   const storeChecked = () => {
-    setRole("store");
+    setRole("Store");
     navigate("signup");
   };
   return (
