@@ -3,10 +3,23 @@ import { useRoleContext } from "../context/RolesProvider";
 import storeImage from "../../public/assets/house.png";
 import scooterImage from "../../public/assets/scooter.png";
 import computerImage from "../../public/assets/computer.png";
+import { useNavigate } from "react-router-dom";
 
 export default function Roles() {
   const { setRole } = useRoleContext();
-
+  const navigate = useNavigate();
+  const adminChecked = () => {
+    setRole("admin");
+    navigate("signup");
+  };
+  const courierChecked = () => {
+    setRole("courier");
+    navigate("signup");
+  };
+  const storeChecked = () => {
+    setRole("store");
+    navigate("signup");
+  };
   return (
     <div className="flex flex-col items-center">
       <div className="navigation pt-[13px] px-[35px] flex items-center w-full justify-between">
@@ -30,7 +43,7 @@ export default function Roles() {
         </div>
         <div className="roles-boxes flex items-center gap-[37.22px] mt-[49px]">
           <div
-            onClick={() => setRole("store")}
+            onClick={storeChecked}
             className="box1 flex flex-col items-center gap-[20px]"
           >
             <div className="bacground flex flex-col items-center justify-center w-[258px] h-[298px] rounded-[14px] bg-[#251B03]">
@@ -41,7 +54,7 @@ export default function Roles() {
             </div>
           </div>
           <div
-            onClick={() => setRole("courier")}
+            onClick={courierChecked}
             className="box2 flex flex-col items-center gap-[20px]"
           >
             <div className="bacground flex flex-col items-center justify-center w-[258px] h-[298px] rounded-[14px] bg-[#251B03]">
@@ -52,7 +65,7 @@ export default function Roles() {
             </div>
           </div>
           <div
-            onClick={() => setRole("admin")}
+            onClick={adminChecked}
             className="box3 flex flex-col items-center gap-[20px]"
           >
             <div className="bacground flex flex-col items-center justify-center w-[258px] h-[298px] rounded-[14px] bg-[#251B03]">
