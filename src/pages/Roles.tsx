@@ -10,15 +10,15 @@ export default function Roles() {
   const navigate = useNavigate();
   const adminChecked = () => {
     setRole("Admin");
-    navigate("signup");
+    navigate("/signup");
   };
   const courierChecked = () => {
     setRole("Courier");
-    navigate("signup");
+    navigate("/signup");
   };
   const storeChecked = () => {
     setRole("Store");
-    navigate("signup");
+    navigate("/signup");
   };
   return (
     <div className="flex flex-col items-center">

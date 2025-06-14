@@ -7,8 +7,10 @@ import computerImage from "../../public/assets/computer.png";
 import mobileIcon from "../../public/assets/phoneIcon.svg";
 import emailIcon from "../../public/assets/mail.svg";
 import adressIcon from "../../public/assets/addressi.svg";
+import { useNavigate } from "react-router-dom";
 
 export default function LandginPage() {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col items-center px-[18px] pt-[16px]">
       <div className="navigation flex items-center w-full justify-between">
@@ -22,10 +24,16 @@ export default function LandginPage() {
           <button className="text-white text-[14px] cursor-pointer">
             About Us
           </button>
-          <button className="text-white text-[14px] cursor-pointer">
+          <button
+            onClick={() => navigate("/roles")}
+            className="text-white text-[14px] cursor-pointer"
+          >
             Log In
           </button>
-          <button className="w-[98px] bg-[#251B03] cursor-pointer rounded-[8px]  py-[12px] text-[14px] text-[#FF9900] font-normal">
+          <button
+            onClick={() => navigate("/roles")}
+            className="w-[98px] bg-[#251B03] cursor-pointer rounded-[8px]  py-[12px] text-[14px] text-[#FF9900] font-normal"
+          >
             Sign Up
           </button>
         </div>

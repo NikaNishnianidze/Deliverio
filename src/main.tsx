@@ -7,11 +7,16 @@ import RolesProvider from "./context/RolesProvider";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import LandginPage from "./pages/LandingPage";
+import Store from "./pages/Store";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <LandginPage />,
+  },
+  {
+    path: "/roles",
+    element: <Roles />,
   },
   {
     path: "/signup",
@@ -20,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/store",
+    element: <Store />,
   },
 ]);
 
