@@ -23,7 +23,12 @@ export default function Roles() {
   return (
     <div className="flex flex-col items-center">
       <div className="navigation pt-[13px] px-[35px] flex items-center w-full justify-between">
-        <div className="logos flex items-center gap-[6px]">
+        <div
+          onClick={() => {
+            navigate("/");
+          }}
+          className="logos flex items-center gap-[6px]"
+        >
           <img src={deliverio} alt="deliverio icon" />
           <p className="text-white text-[20px] font-semibold ">
             Deliver<span className="text-[#F90]">io</span>

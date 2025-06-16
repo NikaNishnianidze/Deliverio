@@ -41,7 +41,12 @@ export default function SignUp() {
   return (
     <div className="flex flex-col items-center">
       <div className="navigation pt-[13px] px-[35px] flex items-center justify-between w-full">
-        <div className="logo flex items-center gap-[8px]">
+        <div
+          onClick={() => {
+            navigate("/");
+          }}
+          className="logo flex items-center gap-[8px]"
+        >
           <img src={deliverio} alt="deliverio" />
           <p className="text-white text-[20px] font-semibold">
             Deliver<span className="text-[#F90]">io</span>
