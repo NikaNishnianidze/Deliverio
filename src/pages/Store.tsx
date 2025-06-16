@@ -4,9 +4,11 @@ import { useRoleContext } from "../context/RolesProvider";
 import homeIcon from "../../public/assets/homeIcon.svg";
 import { useState } from "react";
 import arrowDown from "../../public/assets/arrowDown.svg";
+import arrowLeft from "../../public/assets/arrowLeft.svg";
+import arrowRight from "../../public/assets/arrowRight.svg";
 
 export default function Store() {
-  const { role } = useRoleContext();
+  const { role, storeData } = useRoleContext();
   const navigate = useNavigate();
   const [myOrders, setMyOrders] = useState<boolean>(true);
   const [uploadOrder, setUploadOrder] = useState<boolean>(false);
@@ -18,6 +20,9 @@ export default function Store() {
   const handleUploadOrderClick = () => {
     setUploadOrder(true);
     setMyOrders(false);
+  };
+  const handleStoreClick = (index: number) => {
+    navigate(`/store/${index}`);
   };
   return (
     <div className="flex flex-col items-center px-[35px]">
@@ -90,12 +95,58 @@ export default function Store() {
                 <img src={arrowDown} alt="arrow down icon" />
               </div>
             </div>
-            <div className="numerations mt-[17px] text-white text-[14px] font-normal dk:w-[767px] rounded-[6px] bg-[#858585] py-[12px] px-[24px] flex items-center justify-between">
+            <div className="numerations mb-[14px] mt-[17px] text-white text-[14px] font-normal dk:w-[767px] rounded-[6px] bg-[#858585] py-[12px] px-[24px] flex items-center">
               <p>#</p>
-              <p>DATE</p>
-              <p>NAME</p>
-              <p>AMOUNT</p>
-              <p>STATUS</p>
+              <p className="ml-[142px]">DATE</p>
+              <p className="ml-[156px]">NAME</p>
+              <p className="ml-[110px]">AMOUNT</p>
+              <p className="ml-[120px]">STATUS</p>
+            </div>
+            <div className="list dk:w-[767px] flex flex-col gap-[14px]">
+              {storeData.map((item, index) => {
+                return (
+                  <div key={item.id} className="main flex flex-col">
+                    <div
+                      onClick={() => handleStoreClick(index)}
+                      className="dk:w-[767px] cursor-pointer px-[10px] flex items-center justify-between"
+                    >
+                      <p className="text-white text-[14px] font-semibold">
+                        #{item.id}
+                      </p>
+                      <p className="text-white text-[14px] font-semibold w-[87px] text-center">
+                        {item.date}
+                      </p>
+                      <p className="text-white text-[14px] font-semibold">
+                        {item.name}
+                      </p>
+                      <p className="text-white text-[14px] font-semibold">
+                        {item.amount}
+                      </p>
+                      <div
+                        className="statusdiv w-[77px] rounded-[35px] py-[3px] px-[10px]"
+                        style={{
+                          backgroundColor:
+                            item.status === true ? "#00AB55" : "#292929",
+                        }}
+                      >
+                        <p className="text-white text-[11px] font-semibold">
+                          {item.status === true ? "Completed" : "In Process"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="divider w-[767px] h-[1px] bg-[#E0E6ED]/40 mt-[10px]"></div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="prev-next flex items-center mt-[40px] gap-[6px]">
+              <button className="w-[70px] flex items-center justify-center gap-[4px] py-[6px] bg-[#292929] rounded-[8px] text-white text-[12px] font-normal">
+                <img src={arrowLeft} alt="arrow left" /> Prev
+              </button>
+              <button className="w-[70px] flex items-center justify-center gap-[4px] py-[6px] bg-[#292929] rounded-[8px] text-white text-[12px] font-normal">
+                <img src={arrowRight} alt="arrow right" />
+                Next
+              </button>
             </div>
           </div>
         </div>

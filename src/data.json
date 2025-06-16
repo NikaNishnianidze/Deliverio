@@ -1,0 +1,44 @@
+[
+  {
+    "id": "01",
+    "date": "Mar 05, 2025",
+    "name": "Giorgi",
+    "amount": "59₾",
+    "status": true
+  },
+  {
+    "id": "02",
+    "date": "Mar 07, 2025",
+    "name": "Daviti",
+    "amount": "150₾",
+    "status": false
+  },
+  {
+    "id": "03",
+    "date": "Mar 10, 2025",
+    "name": "Mariami",
+    "amount": "821₾",
+    "status": false
+  },
+  {
+    "id": "04",
+    "date": "Mar 12, 2025",
+    "name": "Nika",
+    "amount": "613₾",
+    "status": true
+  },
+  {
+    "id": "05",
+    "date": "Mar 01, 2025",
+    "name": "Nini",
+    "amount": "61₾",
+    "status": true
+  },
+  {
+    "id": "06",
+    "date": "Mar 20, 2025",
+    "name": "James",
+    "amount": "93₾",
+    "status": false
+  }
+]
