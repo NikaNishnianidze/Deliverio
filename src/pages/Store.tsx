@@ -171,8 +171,12 @@ export default function Store() {
                       </p>
                     </div>
                     <div className="buttons flex items-center gap-[13px]">
-                      <button className="cursor-pointer"></button>
-                      <button className="cursor-pointer"></button>
+                      <button className="cursor-pointer w-[46px] flex justify-center py-[6px] text-[#F90] text-[11px] font-normal">
+                        Edit
+                      </button>
+                      <button className="cursor-pointer w-[108px] rounded-[35px] py-[7px] flex justify-center text-[#FF0000] bg-[#F00]/30 text-[11px] font-semibold">
+                        Delete
+                      </button>
                     </div>
                   </div>
                 </div>
