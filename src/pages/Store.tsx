@@ -8,6 +8,9 @@ import arrowLeft from "../../public/assets/arrowLeft.svg";
 import arrowRight from "../../public/assets/arrowRight.svg";
 
 export default function Store() {
+  const [selectedOrder, setSelectedOrder] = useState<
+    null | (typeof storeData)[0]
+  >(null);
   const { role, storeData } = useRoleContext();
   const navigate = useNavigate();
   const [myOrders, setMyOrders] = useState<boolean>(true);
@@ -22,7 +25,7 @@ export default function Store() {
     setMyOrders(false);
   };
   const handleStoreClick = (index: number) => {
-    navigate(`/store/${index}`);
+    setSelectedOrder(storeData[index]);
   };
   return (
     <div className="flex flex-col items-center px-[35px]">
@@ -65,7 +68,11 @@ export default function Store() {
                   className="ml-[21px]"
                   style={{ color: myOrders ? "white" : "#858585" }}
                 >
-                  My Orders
+                  {myOrders
+                    ? selectedOrder
+                      ? "Order Details"
+                      : "My Orders"
+                    : "Upload Order"}
                 </p>
               </div>
               <div className="divider w-[220px] h-[1px] bg-[#545454]"></div>
@@ -97,14 +104,80 @@ export default function Store() {
             </div>
             <div className="numerations mb-[14px] mt-[17px] text-white text-[14px] font-normal dk:w-[767px] rounded-[6px] bg-[#858585] py-[12px] px-[24px] flex items-center">
               <p>#</p>
-              <p className="ml-[142px]">DATE</p>
-              <p className="ml-[156px]">NAME</p>
-              <p className="ml-[110px]">AMOUNT</p>
-              <p className="ml-[120px]">STATUS</p>
+              <p
+                className="ml-[142px]"
+                style={{ marginLeft: selectedOrder ? "210px" : "142px" }}
+              >
+                DATE
+              </p>
+              <p
+                className="ml-[156px]"
+                style={{ marginLeft: selectedOrder ? "222px" : "156px" }}
+              >
+                NAME
+              </p>
+              <p
+                className="ml-[110px]"
+                style={{ marginLeft: selectedOrder ? "155px" : "110px" }}
+              >
+                AMOUNT
+              </p>
+              {selectedOrder ? null : <p className="ml-[120px]">STATUS</p>}
             </div>
             <div className="list dk:w-[767px] flex flex-col gap-[14px]">
-              {storeData.map((item, index) => {
-                return (
+              {selectedOrder ? (
+                <div className="main flex flex-col">
+                  <div className="dk:w-[767px] px-[10px] flex items-center justify-between">
+                    <p className="text-white text-[14px] font-semibold">
+                      #{selectedOrder.id}
+                    </p>
+                    <p className="text-white text-[14px] font-semibold w-[87px] text-center">
+                      {selectedOrder.date}
+                    </p>
+                    <p className="text-white text-[14px] font-semibold">
+                      {selectedOrder.name}
+                    </p>
+                    <p className="text-white text-[14px] font-semibold">
+                      {selectedOrder.amount}
+                    </p>
+                  </div>
+                  <div className="divider w-[767px] h-[1px] bg-[#E0E6ED]/40 mt-[10px]"></div>
+                  <button
+                    onClick={() => setSelectedOrder(null)}
+                    className="mt-[20px] flex items-center gap-[5px] self-start text-[13px] text-[#FFD451] underline"
+                  >
+                    <img src={arrowLeft} alt="arrow left" /> Back to list
+                  </button>
+                  <div className="details mt-[26px] flex flex-col">
+                    <p className="text-white text-[14px] font-normal">
+                      Product Details:
+                    </p>
+                    <p className="text-[#757575] text-[15px] font-normal w-[707px]">
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry. Lorem Ipsum has been the industry's
+                      standard dummy text ever since the 1500s, when an unknown
+                      printer took a galley of type
+                    </p>
+                  </div>
+                  <p className="mt-[18px] text-white text-[14px] font-normal">
+                    Order Status:
+                  </p>
+                  <div className="status-buttons mt-[7px] flex items-center justify-between">
+                    <div className="status flex justify-center w-[109px] rounded-[35px] py-[7px] bg-[#00AB55]/30 text-[#00AB55] text-[11px] font-semibold ">
+                      <p>
+                        {selectedOrder.status === true
+                          ? "Completed"
+                          : "In Process"}
+                      </p>
+                    </div>
+                    <div className="buttons flex items-center gap-[13px]">
+                      <button className="cursor-pointer"></button>
+                      <button className="cursor-pointer"></button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                storeData.map((item, index) => (
                   <div key={item.id} className="main flex flex-col">
                     <div
                       onClick={() => handleStoreClick(index)}
@@ -125,28 +198,69 @@ export default function Store() {
                       <div
                         className="statusdiv w-[77px] rounded-[35px] py-[3px] px-[10px]"
                         style={{
-                          backgroundColor:
-                            item.status === true ? "#00AB55" : "#292929",
+                          backgroundColor: item.status ? "#00AB55" : "#292929",
                         }}
                       >
                         <p className="text-white text-[11px] font-semibold">
-                          {item.status === true ? "Completed" : "In Process"}
+                          {item.status ? "Completed" : "In Process"}
                         </p>
                       </div>
                     </div>
                     <div className="divider w-[767px] h-[1px] bg-[#E0E6ED]/40 mt-[10px]"></div>
                   </div>
-                );
-              })}
+                ))
+              )}
             </div>
-            <div className="prev-next flex items-center mt-[40px] gap-[6px]">
-              <button className="w-[70px] flex items-center justify-center gap-[4px] py-[6px] bg-[#292929] rounded-[8px] text-white text-[12px] font-normal">
-                <img src={arrowLeft} alt="arrow left" /> Prev
-              </button>
-              <button className="w-[70px] flex items-center justify-center gap-[4px] py-[6px] bg-[#292929] rounded-[8px] text-white text-[12px] font-normal">
-                <img src={arrowRight} alt="arrow right" />
-                Next
-              </button>
+            {selectedOrder ? null : (
+              <div className="prev-next flex items-center mt-[40px] gap-[6px]">
+                <button className="w-[70px] flex items-center justify-center gap-[4px] py-[6px] bg-[#292929] rounded-[8px] text-white text-[12px] font-normal">
+                  <img src={arrowLeft} alt="arrow left" /> Prev
+                </button>
+                <button className="w-[70px] flex items-center justify-center gap-[4px] py-[6px] bg-[#292929] rounded-[8px] text-white text-[12px] font-normal">
+                  <img src={arrowRight} alt="arrow right" />
+                  Next
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      {uploadOrder && (
+        <div className="orders-main-box mb:flex mb:flex-col dk:flex dk:flex-row dk:items-start dk:justify-between w-full">
+          <div className="order-options-box">
+            <div className="order-options flex flex-col w-[220px] border-[1px] border-about rounded-[8px] py-[5px] mt-[16px]">
+              <div onClick={handleMyOrdersClick} className="myOrders mb-[5px]">
+                <p
+                  className="ml-[21px]"
+                  style={{ color: myOrders ? "white" : "#858585" }}
+                >
+                  My Orders
+                </p>
+              </div>
+              <div className="divider w-[220px] h-[1px] bg-[#545454]"></div>
+              <div
+                onClick={handleUploadOrderClick}
+                className="uploadOrder mt-[5px]"
+              >
+                <p
+                  className="ml-[21px]"
+                  style={{ color: uploadOrder ? "white" : "#858585" }}
+                >
+                  Upload Order
+                </p>
+              </div>
+            </div>
+            <div className="hash mt-[359px]">
+              <p className="text-[14px] text-[#858585] font-normal">
+                © Deliverio
+              </p>
+            </div>
+          </div>
+          <div className="upload-order dk:w-[807px] p-[20px]">
+            <p className="text-white text-[18px] font-bold">Upload Order</p>
+            <div className="upload-close flex items-center justify-between mt-[19px]">
+              <p className="">Upload</p>
+              <p>X</p>
             </div>
           </div>
         </div>
