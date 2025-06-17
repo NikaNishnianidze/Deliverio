@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import deliverio from "../../public/assets/delivericon.svg";
 import { useRoleContext } from "../context/RolesProvider";
 import homeIcon from "../../public/assets/homeIcon.svg";
@@ -6,15 +6,36 @@ import { useState } from "react";
 import arrowDown from "../../public/assets/arrowDown.svg";
 import arrowLeft from "../../public/assets/arrowLeft.svg";
 import arrowRight from "../../public/assets/arrowRight.svg";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import type { IInputs } from "../Inputs";
 
+const schema: yup.ObjectSchema<IInputs> = yup.object({
+  name: yup.string().required("name is required"),
+  address: yup.string().required("address is required"),
+  phoneNumber: yup.string().required("phone number is required"),
+  date: yup.string().required("date is required"),
+  amount: yup.string().required("amount is required"),
+});
 export default function Store() {
   const [selectedOrder, setSelectedOrder] = useState<
     null | (typeof storeData)[0]
   >(null);
-  const { role, storeData } = useRoleContext();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IInputs>({
+    resolver: yupResolver(schema),
+  });
+  const { role, storeData, setStoreData } = useRoleContext();
   const navigate = useNavigate();
   const [myOrders, setMyOrders] = useState<boolean>(true);
   const [uploadOrder, setUploadOrder] = useState<boolean>(false);
+  const [edit, setEdit] = useState<boolean>(false);
+  const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
+  const [sort, setSort] = useState<boolean>(false);
 
   const handleMyOrdersClick = () => {
     setMyOrders(true);
@@ -27,6 +48,32 @@ export default function Store() {
   const handleStoreClick = (index: number) => {
     setSelectedOrder(storeData[index]);
   };
+  const handleDelete = () => {
+    if (!selectedOrder) return;
+    const updatedStore = storeData.filter(
+      (order) => order.id !== selectedOrder.id
+    );
+    setStoreData(updatedStore);
+    setSelectedOrder(null);
+    setDeleteOpen(false);
+  };
+  const handleEdit = (data: IInputs) => {
+    if (!selectedOrder) return;
+
+    const updatedOrder = {
+      ...selectedOrder,
+      ...data,
+    };
+
+    const updatedStore = storeData.map((order) =>
+      order.id === selectedOrder.id ? updatedOrder : order
+    );
+
+    setStoreData(updatedStore);
+    setSelectedOrder(updatedOrder);
+    setEdit(false);
+  };
+  console.log(errors);
   return (
     <div className="flex flex-col items-center px-[35px]">
       <div className="navigation pt-[22px] flex items-center justify-between w-full">
@@ -102,40 +149,53 @@ export default function Store() {
                 <img src={arrowDown} alt="arrow down icon" />
               </div>
             </div>
-            <div className="numerations mb-[14px] mt-[17px] text-white text-[14px] font-normal dk:w-[767px] rounded-[6px] bg-[#858585] py-[12px] px-[24px] flex items-center">
-              <p>#</p>
-              <p
-                className="ml-[142px]"
-                style={{ marginLeft: selectedOrder ? "210px" : "142px" }}
-              >
-                DATE
-              </p>
-              <p
-                className="ml-[156px]"
-                style={{ marginLeft: selectedOrder ? "222px" : "156px" }}
-              >
-                NAME
-              </p>
-              <p
-                className="ml-[110px]"
-                style={{ marginLeft: selectedOrder ? "155px" : "110px" }}
-              >
-                AMOUNT
-              </p>
-              {selectedOrder ? null : <p className="ml-[120px]">STATUS</p>}
-            </div>
+            {selectedOrder ? (
+              <div className="numerations mb-[14px] mt-[17px] text-white text-[14px] font-normal dk:w-[767px] rounded-[6px] bg-[#858585] py-[12px] px-[10px] flex items-center">
+                <p>Name</p>
+                <p className="ml-[131px]">Address</p>
+                <p className="ml-[117px]">Phone Number</p>
+                <p className="ml-[115px]">Date</p>
+                <p className="ml-[120px]">Amount</p>
+              </div>
+            ) : (
+              <div className="numerations mb-[14px] mt-[17px] text-white text-[14px] font-normal dk:w-[767px] rounded-[6px] bg-[#858585] py-[12px] px-[24px] flex items-center">
+                <p>#</p>
+                <p
+                  className="ml-[142px]"
+                  style={{ marginLeft: selectedOrder ? "210px" : "142px" }}
+                >
+                  DATE
+                </p>
+                <p
+                  className="ml-[156px]"
+                  style={{ marginLeft: selectedOrder ? "222px" : "156px" }}
+                >
+                  NAME
+                </p>
+                <p
+                  className="ml-[110px]"
+                  style={{ marginLeft: selectedOrder ? "155px" : "110px" }}
+                >
+                  AMOUNT
+                </p>
+                {selectedOrder ? null : <p className="ml-[120px]">STATUS</p>}
+              </div>
+            )}
             <div className="list dk:w-[767px] flex flex-col gap-[14px]">
               {selectedOrder ? (
                 <div className="main flex flex-col">
                   <div className="dk:w-[767px] px-[10px] flex items-center justify-between">
                     <p className="text-white text-[14px] font-semibold">
-                      #{selectedOrder.id}
+                      {selectedOrder.name}
                     </p>
                     <p className="text-white text-[14px] font-semibold w-[87px] text-center">
-                      {selectedOrder.date}
+                      {selectedOrder.address}
                     </p>
                     <p className="text-white text-[14px] font-semibold">
-                      {selectedOrder.name}
+                      {selectedOrder.phoneNumber}
+                    </p>
+                    <p className="text-white text-[14px] font-semibold">
+                      {selectedOrder.date}
                     </p>
                     <p className="text-white text-[14px] font-semibold">
                       {selectedOrder.amount}
@@ -171,14 +231,146 @@ export default function Store() {
                       </p>
                     </div>
                     <div className="buttons flex items-center gap-[13px]">
-                      <button className="cursor-pointer w-[46px] flex justify-center py-[6px] text-[#F90] text-[11px] font-normal">
+                      <button
+                        onClick={() => setEdit(true)}
+                        className="cursor-pointer w-[46px] flex justify-center py-[6px] text-[#F90] text-[11px] font-normal"
+                      >
                         Edit
                       </button>
-                      <button className="cursor-pointer w-[108px] rounded-[35px] py-[7px] flex justify-center text-[#FF0000] bg-[#F00]/30 text-[11px] font-semibold">
+                      <button
+                        onClick={() => setDeleteOpen(true)}
+                        className="cursor-pointer w-[108px] rounded-[35px] py-[7px] flex justify-center text-[#FF0000] bg-[#F00]/30 text-[11px] font-semibold"
+                      >
                         Delete
                       </button>
                     </div>
                   </div>
+                  {deleteOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                      <div className="w-[244px] py-[13px] px-[32px] flex flex-col items-center">
+                        <p className="text-white text-[14px] font-bold">
+                          Delete Order?
+                        </p>
+                        <div className="buttons mt-[30px] flex items-center gap-[38px]">
+                          <button
+                            onClick={handleDelete}
+                            className="w-[91px] rounded-[6px] py-[3px] flex justify-center bg-[#580C0C] text-[#FF0000] text-[14px] font-normal cursor-pointer"
+                          >
+                            Delete
+                          </button>
+                          <button
+                            onClick={() => setDeleteOpen(false)}
+                            className="text-white text-[14px] font-semibold"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {edit && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                      <div className="w-[409px] py-[20px] px-[28px] flex flex-col items-center">
+                        <p className="text-white text-[18px] font-normal">
+                          Edit
+                        </p>
+                        <form
+                          onSubmit={handleSubmit(handleEdit)}
+                          className="flex flex-col gap-[21px] mt-[21px]"
+                        >
+                          <div className="name">
+                            <label
+                              htmlFor="name"
+                              className="text-white text-[14px] font-normal"
+                            >
+                              Name
+                            </label>
+                            <input
+                              type="text"
+                              id="name"
+                              {...register("name")}
+                              className="w-[352px] rounded-[4px] outline-none h-[28px] bg-[#343434] text-white"
+                              defaultValue={selectedOrder?.name}
+                            />
+                          </div>
+                          <div className="address">
+                            <label
+                              htmlFor="address"
+                              className="text-white text-[14px] font-normal"
+                            >
+                              Address
+                            </label>
+                            <input
+                              type="text"
+                              id="address"
+                              {...register("address")}
+                              className="w-[352px] rounded-[4px] outline-none h-[28px] bg-[#343434] text-white"
+                              defaultValue={selectedOrder?.address}
+                            />
+                          </div>
+                          <div className="phoneNumber">
+                            <label
+                              htmlFor="phoneNumber"
+                              className="text-white text-[14px] font-normal"
+                            >
+                              Phone Number
+                            </label>
+                            <input
+                              type="text"
+                              id="phoneNumber"
+                              {...register("phoneNumber")}
+                              className="w-[352px] rounded-[4px] outline-none h-[28px] bg-[#343434] text-white"
+                              defaultValue={selectedOrder?.phoneNumber}
+                            />
+                          </div>
+                          <div className="Date">
+                            <label
+                              htmlFor="date"
+                              className="text-white text-[14px] font-normal"
+                            >
+                              Date
+                            </label>
+                            <input
+                              type="text"
+                              id="date"
+                              {...register("date")}
+                              className="w-[352px] rounded-[4px] outline-none h-[28px] bg-[#343434] text-white"
+                              defaultValue={selectedOrder?.date}
+                            />
+                          </div>
+                          <div className="Amount">
+                            <label
+                              htmlFor="amount"
+                              className="text-white text-[14px] font-normal"
+                            >
+                              Amount
+                            </label>
+                            <input
+                              type="text"
+                              id="amount"
+                              {...register("amount")}
+                              className="w-[352px] rounded-[4px] outline-none h-[28px] bg-[#343434] text-white"
+                              defaultValue={selectedOrder?.amount}
+                            />
+                          </div>
+                          <div className="buttons flex items-center justify-center gap-[38px]">
+                            <button
+                              type="submit"
+                              className="w-[91px] rounded-[6px] py-[5px] bg-[#585858] text-white text-[14px] font-normal"
+                            >
+                              Save
+                            </button>
+                            <button
+                              onClick={() => setEdit(false)}
+                              className="text-white text-[14px] font-normal"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 storeData.map((item, index) => (
