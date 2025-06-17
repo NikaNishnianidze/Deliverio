@@ -10,7 +10,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import type { IInputs } from "../Inputs";
-
+import checkmark from "../../public/assets/gridicons_checkmark.svg";
+import type { TStore } from "../datatype";
 const schema: yup.ObjectSchema<IInputs> = yup.object({
   name: yup.string().required("name is required"),
   address: yup.string().required("address is required"),
@@ -36,6 +37,8 @@ export default function Store() {
   const [edit, setEdit] = useState<boolean>(false);
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
   const [sort, setSort] = useState<boolean>(false);
+  const [chosenSort, setChosenSort] = useState<string>("");
+  const [sortedOrders, setSortedOrders] = useState<TStore>(storeData);
 
   const handleMyOrdersClick = () => {
     setMyOrders(true);
@@ -45,8 +48,8 @@ export default function Store() {
     setUploadOrder(true);
     setMyOrders(false);
   };
-  const handleStoreClick = (index: number) => {
-    setSelectedOrder(storeData[index]);
+  const handleStoreClick = (order: (typeof storeData)[0]) => {
+    setSelectedOrder(order);
   };
   const handleDelete = () => {
     if (!selectedOrder) return;
@@ -73,7 +76,32 @@ export default function Store() {
     setSelectedOrder(updatedOrder);
     setEdit(false);
   };
-  console.log(errors);
+
+  const handleDateSort = () => {
+    setChosenSort("Date");
+    const sorted = [...storeData].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+    setSortedOrders(sorted);
+    setSort(false);
+  };
+
+  const handleStoreSort = () => {
+    setChosenSort("Store");
+    const sorted = [...storeData].sort((a, b) => a.name.localeCompare(b.name));
+    setSortedOrders(sorted);
+    setSort(false);
+  };
+
+  const handleStatusSort = () => {
+    setChosenSort("Status");
+    const sorted = [...storeData].sort(
+      (a, b) => Number(b.status) - Number(a.status)
+    );
+    setSortedOrders(sorted);
+    setSort(false);
+  };
+
   return (
     <div className="flex flex-col items-center px-[35px]">
       <div className="navigation pt-[22px] flex items-center justify-between w-full">
@@ -141,13 +169,67 @@ export default function Store() {
               </p>
             </div>
           </div>
-          <div className="orders-list-box flex flex-col dk:w-[807px] p-[20px]">
+          <div className="orders-list-box relative flex flex-col dk:w-[807px] p-[20px]">
             <div className="sorting flex items-center justify-between">
               <p className="text-white text-[18px] font-semibold">My Orders</p>
-              <div className="sort flex items-center justify-center gap-[5px] w-[103px] rounded-[8px] py-[9px] bg-[#343434]">
-                <p className="text-white text-[14px] font-normal">Sort by</p>
+              <div
+                onClick={() => setSort(true)}
+                className="sort flex items-center justify-center gap-[5px] w-[103px] rounded-[8px] py-[9px] bg-[#343434]"
+              >
+                <p className="text-white text-[14px] font-normal">
+                  {chosenSort ? chosenSort : "Sort by"}
+                </p>
                 <img src={arrowDown} alt="arrow down icon" />
               </div>
+              {sort && (
+                <div className="fixed inset-0 z-50 absolute top-56 left-430">
+                  <div className="w-[103px] rounded-[8px] p-[8px] bg-[#292929] border-[1px] border-[#585858] shadow-sort">
+                    <div
+                      onClick={handleDateSort}
+                      className="date flex items-center gap-[6px]"
+                    >
+                      <img
+                        src={checkmark}
+                        alt="checkmark"
+                        style={{
+                          display: chosenSort === "Date" ? "block" : "none",
+                        }}
+                      />
+                      <p className="text-white text-[14px] font-normal">Date</p>
+                    </div>
+                    <div
+                      onClick={handleStoreSort}
+                      className="store flex items-center gap-[6px]"
+                    >
+                      <img
+                        src={checkmark}
+                        alt="checkmark"
+                        style={{
+                          display: chosenSort === "Store" ? "block" : "none",
+                        }}
+                      />
+                      <p className="text-white text-[14px] font-normal">
+                        Store
+                      </p>
+                    </div>
+                    <div
+                      onClick={handleStatusSort}
+                      className="status flex items-center gap-[6px]"
+                    >
+                      <img
+                        src={checkmark}
+                        alt="checkmark"
+                        style={{
+                          display: chosenSort === "Status" ? "block" : "none",
+                        }}
+                      />
+                      <p className="text-white text-[14px] font-normal">
+                        Status
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             {selectedOrder ? (
               <div className="numerations mb-[14px] mt-[17px] text-white text-[14px] font-normal dk:w-[767px] rounded-[6px] bg-[#858585] py-[12px] px-[10px] flex items-center">
@@ -373,10 +455,10 @@ export default function Store() {
                   )}
                 </div>
               ) : (
-                storeData.map((item, index) => (
+                sortedOrders.map((item, index) => (
                   <div key={item.id} className="main flex flex-col">
                     <div
-                      onClick={() => handleStoreClick(index)}
+                      onClick={() => handleStoreClick(item)}
                       className="dk:w-[767px] cursor-pointer px-[10px] flex items-center justify-between"
                     >
                       <p className="text-white text-[14px] font-semibold">
