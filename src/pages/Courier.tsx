@@ -10,12 +10,17 @@ import messageIcon from "../../public/assets/message.svg";
 import editIcon from "../../public/assets/edit.svg";
 import carrotLeft from "../../public/assets/arrowLeft.svg";
 import carrotRight from "../../public/assets/arrowRight.svg";
+import type { TCourierType } from "../Couriertype";
+import chechMark from "../../public/assets/gridicons_checkmark.svg";
 
 export default function Courier() {
   const { role } = useRoleContext();
   const navigate = useNavigate();
   const [packagesIsClicked, setPackagesIsClicked] = useState<boolean>(true);
   const [mapIsClicked, setMapIsClicked] = useState<boolean>(false);
+  const [sortedData, setSortedData] = useState<TCourierType>(courierData);
+  const [selectedSort, setSelectedSort] = useState<string>("id");
+  const [sortOpen, setSortOpen] = useState<boolean>(false);
 
   const handlePackagesClick = () => {
     setPackagesIsClicked(true);
@@ -24,6 +29,21 @@ export default function Courier() {
   const handleMapClick = () => {
     setPackagesIsClicked(false);
     setMapIsClicked(true);
+  };
+  const handleSort = (criteria: string) => {
+    setSelectedSort(criteria);
+    const sorted = [...sortedData].sort((a, b) => {
+      if (criteria === "id") {
+        return Number(a.id) - Number(b.id);
+      } else if (criteria === "name") {
+        return a.name.localeCompare(b.name);
+      } else if (criteria === "status") {
+        return a.status.localeCompare(b.status);
+      }
+      return 0;
+    });
+    setSortedData(sorted);
+    setSortOpen(false);
   };
   return (
     <div className="flex flex-col items-center">
@@ -77,13 +97,55 @@ export default function Courier() {
                 <p className="text-white text-[18px] font-semibold">
                   My Packages
                 </p>
-                <div className="sort w-[103px] rounded-[8px] bg-[#343434] flex items-center justify-center cursor-pointer gap-[6px] py-[7px]">
+                <div
+                  onClick={() => setSortOpen(true)}
+                  className="sort w-[103px] rounded-[8px] bg-[#343434] flex items-center justify-center cursor-pointer gap-[6px] py-[7px]"
+                >
                   <p className="text-white text-[14px] font-normal">Sort by</p>
                   <img src={arrowDown} alt="arrow down icon" />
                 </div>
+                {sortOpen ? (
+                  <div className="fixed inset-0 z-50 top-55 left-330.5">
+                    <div className="w-[103px] rounded-[8px] bg-[#292929] shadow-sort py-[8px] pl-[8px]">
+                      <div className="id flex items-center gap-[3px] cursor-pointer">
+                        {selectedSort === "id" && (
+                          <img src={chechMark} alt="checkmark" />
+                        )}
+                        <p
+                          onClick={() => handleSort("id")}
+                          className="text-white text-[14px] cursor-pointer"
+                        >
+                          ID
+                        </p>
+                      </div>
+                      <div className="name flex items-center gap-[3px] cursor-pointer">
+                        {selectedSort === "name" && (
+                          <img src={chechMark} alt="checkmark" />
+                        )}
+                        <p
+                          onClick={() => handleSort("name")}
+                          className="text-white text-[14px] cursor-pointer"
+                        >
+                          Name
+                        </p>
+                      </div>
+                      <div className="status flex items-center gap-[3px] cursor-pointer">
+                        {selectedSort === "status" && (
+                          <img src={chechMark} alt="checkmark" />
+                        )}
+                        <p
+                          onClick={() => handleSort("status")}
+                          className="text-white text-[14px] cursor-pointer"
+                        >
+                          Status
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
               </div>
               <div className="packages-box border-[1px] border-[#B8B8B8]/20 rounded-[10px] w-[655px] mt-[26px] flex flex-col">
-                {courierData.map((item, index) => {
+                {sortedData.map((item, index) => {
                   return (
                     <div
                       key={index}
