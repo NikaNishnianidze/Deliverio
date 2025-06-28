@@ -1,0 +1,38 @@
+[
+  {
+    "id": "01",
+    "name": "Giorgi",
+    "phoneNumber": "555216994",
+    "status": "Completed"
+  },
+  {
+    "id": "02",
+    "name": "Daviti",
+    "phoneNumber": "555216994",
+    "status": "Completed"
+  },
+  {
+    "id": "03",
+    "name": "Mariami",
+    "phoneNumber": "555216994",
+    "status": "Denied-Once"
+  },
+  {
+    "id": "04",
+    "name": "Nika",
+    "phoneNumber": "555216994",
+    "status": "Denied-Twice"
+  },
+  {
+    "id": "05",
+    "name": "Nini",
+    "phoneNumber": "555216994",
+    "status": "Denied-Once"
+  },
+  {
+    "id": "06",
+    "name": "James",
+    "phoneNumber": "555216994",
+    "status": "To-Deliver"
+  }
+]
