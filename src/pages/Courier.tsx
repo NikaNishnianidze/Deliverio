@@ -21,6 +21,8 @@ export default function Courier() {
   const [sortedData, setSortedData] = useState<TCourierType>(courierData);
   const [selectedSort, setSelectedSort] = useState<string>("id");
   const [sortOpen, setSortOpen] = useState<boolean>(false);
+  const [editOpen, setEditOpen] = useState<boolean>(false);
+  const [editIndex, setEditIndex] = useState<number | null>(null);
 
   const handlePackagesClick = () => {
     setPackagesIsClicked(true);
@@ -44,6 +46,36 @@ export default function Courier() {
     });
     setSortedData(sorted);
     setSortOpen(false);
+  };
+  const handleStatusChange = (criteria: string, indexToUpdate: number) => {
+    const updatedData = sortedData.map((item, index) => {
+      if (index === indexToUpdate) {
+        if (criteria === "Delivered") {
+          return {
+            ...item,
+            status: "Completed",
+          };
+        } else if (criteria === "Denied-Once") {
+          return {
+            ...item,
+            status: "Denied-Once",
+          };
+        } else if (criteria === "Denied-Twice") {
+          return {
+            ...item,
+            status: "Denied-Twice",
+          };
+        } else if (criteria === "To-Deliver") {
+          return {
+            ...item,
+            status: "To-Deliver",
+          };
+        }
+      }
+      return item;
+    });
+    setSortedData(updatedData);
+    setEditOpen(false);
   };
   return (
     <div className="flex flex-col items-center">
@@ -194,7 +226,13 @@ export default function Courier() {
                             Message
                           </p>
                         </div>
-                        <div className="edit ml-[36px] flex items-center gap-[2px]">
+                        <div
+                          onClick={() => {
+                            setEditOpen(true);
+                            setEditIndex(index);
+                          }}
+                          className="edit ml-[36px] flex items-center gap-[2px]"
+                        >
                           <img src={editIcon} alt="edit icon" />
                           <p className="text-[#B8B8B8] text-[14px] font-normal">
                             Edit
@@ -208,6 +246,53 @@ export default function Courier() {
                   );
                 })}
               </div>
+              {editOpen && editIndex !== null ? (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                  <div className="w-[230px] py-[15px] px-[20px] flex flex-col items-center gap-[7px] rounded-[8px] bg-[#111111] border-[1px] border-[#363636]">
+                    <p className="text-[#FFFFFF] text-[18px] font-normal">
+                      Change Order Status
+                    </p>
+                    <div
+                      onClick={() => handleStatusChange("Delivered", editIndex)}
+                      className="delivered mt-[7px] w-[109px] rounded-[28px] py-[6px] bg-[#0C3F25] flex justify-center"
+                    >
+                      <p className="text-[12px] font-normal text-[#00AB55]">
+                        Delivered
+                      </p>
+                    </div>
+                    <div
+                      onClick={() =>
+                        handleStatusChange("Denied-Once", editIndex)
+                      }
+                      className="denied-once w-[109px] rounded-[28px] py-[6px] bg-[#7E510D] flex justify-center"
+                    >
+                      <p className="text-[12px] font-normal text-[#FF9900]">
+                        Denied Once
+                      </p>
+                    </div>
+                    <div
+                      onClick={() =>
+                        handleStatusChange("Denied-Twice", editIndex)
+                      }
+                      className="denied-twice w-[109px] rounded-[28px] py-[6px] bg-[#580C0C] flex justify-center"
+                    >
+                      <p className="text-[12px] font-normal text-[#FF0000]">
+                        Denied Twice
+                      </p>
+                    </div>
+                    <div
+                      onClick={() =>
+                        handleStatusChange("To-Deliver", editIndex)
+                      }
+                      className="to-deliver w-[109px] rounded-[28px] py-[6px] bg-[#343434] flex justify-center"
+                    >
+                      <p className="text-[12px] font-normal text-[#FFFFFF]">
+                        To Deliver
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
               <div className="prev-next-colors mt-[40px] flex items-center justify-between w-full px-[20px]">
                 <div className="prev-next flex items-center gap-[6px]">
                   <div className="prev w-[70px] rounded-[8px] py-[6px] flex items-center justify-center gap-[3px] bg-[#292929]">

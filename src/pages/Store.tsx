@@ -494,7 +494,7 @@ export default function Store() {
                 </div>
               ) : (
                 sortedOrders.map((item, index) => (
-                  <div key={item.id} className="main flex flex-col">
+                  <div key={index} className="main flex flex-col">
                     <div
                       onClick={() => handleStoreClick(item)}
                       className="dk:w-[767px] cursor-pointer px-[10px] flex items-center justify-between"
