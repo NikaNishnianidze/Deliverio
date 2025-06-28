@@ -8,6 +8,7 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import LandginPage from "./pages/LandingPage";
 import Store from "./pages/Store";
+import Courier from "./pages/Courier";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: "/store",
     element: <Store />,
+  },
+  {
+    path: "/courier",
+    element: <Courier />,
   },
 ]);
 

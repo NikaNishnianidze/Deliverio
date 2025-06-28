@@ -1,11 +1,12 @@
-import { data, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import deliverio from "../../public/assets/delivericon.svg";
 import { useRoleContext } from "../context/RolesProvider";
 import homeIcon from "../../public/assets/homeIcon.svg";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import arrowDown from "../../public/assets/arrowDown.svg";
 import arrowLeft from "../../public/assets/arrowLeft.svg";
 import arrowRight from "../../public/assets/arrowRight.svg";
+import folderIcon from "../../public/assets/Folder.svg";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -39,6 +40,7 @@ export default function Store() {
   const [sort, setSort] = useState<boolean>(false);
   const [chosenSort, setChosenSort] = useState<string>("");
   const [sortedOrders, setSortedOrders] = useState<TStore>(storeData);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleMyOrdersClick = () => {
     setMyOrders(true);
@@ -101,10 +103,46 @@ export default function Store() {
     setSortedOrders(sorted);
     setSort(false);
   };
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFile = (event: any) => {
+    const file = event.target.files[0];
+    if (file && file.type === "text/csv") {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const content = e.target?.result as string;
+
+        const lines = content
+          .split("\n")
+          .map((line) => line.trim())
+          .filter((line) => line !== "")
+          .map((line) => line.split(","));
+
+        const newOrders: TStore = lines.slice(1).map((line, index) => ({
+          id: `${(storeData.length + index + 1).toString().padStart(2, "0")}`,
+          date: line[0],
+          name: line[1],
+          address: line[2],
+          phoneNumber: line[3],
+          amount: `${line[4]}₾`,
+          status: line[5] === "true",
+        }));
+
+        const updatedStore = [...storeData, ...newOrders];
+        setStoreData(updatedStore);
+        setSortedOrders(updatedStore);
+      };
+      reader.readAsText(file);
+    } else {
+      alert("Please upload a valid CSV file.");
+    }
+  };
 
   return (
-    <div className="flex flex-col items-center px-[35px]">
-      <div className="navigation pt-[22px] flex items-center justify-between w-full">
+    <div className="flex flex-col items-center ">
+      <div className="navigation py-[13px] flex px-[35px] items-center justify-between w-full bg-[#111]">
         <div
           onClick={() => {
             navigate("/");
@@ -130,12 +168,12 @@ export default function Store() {
           </button>
         </div>
       </div>
-      <div className="dashboard flex items-center gap-[7px] w-full mt-[66px]">
+      <div className="dashboard flex items-center gap-[7px] w-full mt-[66px] px-[35px]">
         <img src={homeIcon} alt="homeicon" />
         <p className="text-[#FFD451] text-[14px] font-normal">Dashboard</p>
       </div>
       {myOrders && (
-        <div className="orders-main-box mb:flex mb:flex-col dk:flex dk:flex-row dk:items-start dk:justify-between w-full">
+        <div className="orders-main-box px-[35px] mb:flex mb:flex-col dk:flex dk:flex-row dk:items-start dk:justify-between w-full">
           <div className="order-options-box">
             <div className="order-options flex flex-col w-[220px] border-[1px] border-about rounded-[8px] py-[5px] mt-[16px]">
               <div onClick={handleMyOrdersClick} className="myOrders mb-[5px]">
@@ -504,7 +542,7 @@ export default function Store() {
         </div>
       )}
       {uploadOrder && (
-        <div className="orders-main-box mb:flex mb:flex-col dk:flex dk:flex-row dk:items-start dk:justify-between w-full">
+        <div className="orders-main-box px-[35px] mb:flex mb:flex-col dk:flex dk:flex-row dk:items-start dk:justify-between w-full">
           <div className="order-options-box">
             <div className="order-options flex flex-col w-[220px] border-[1px] border-about rounded-[8px] py-[5px] mt-[16px]">
               <div onClick={handleMyOrdersClick} className="myOrders mb-[5px]">
@@ -534,12 +572,40 @@ export default function Store() {
               </p>
             </div>
           </div>
-          <div className="upload-order dk:w-[807px] p-[20px]">
-            <p className="text-white text-[18px] font-bold">Upload Order</p>
-            <div className="upload-close flex items-center justify-between mt-[19px]">
-              <p className="">Upload</p>
-              <p>X</p>
+          <div className="upload-order dk:w-[807px] flex flex-col items-center p-[20px] bg-[#111] rounded-[6px]">
+            <p className="text-white text-[18px] font-bold w-[767px]">
+              Upload Order
+            </p>
+            <div className="upload-close flex items-center justify-between mt-[19px] w-[767px]">
+              <p className="text-[#FF9900] text-[16px] font-semibold">Upload</p>
+              <p className="text-[#5D482A] text-[16px] font-semibold">X</p>
             </div>
+            <div className="choose-file w-[767px] flex items-center justify-between rounded-[6px] bg-[#343434] border-[1px] border-choosefile mt-[16px] pl-[17px]">
+              <p className="text-choosefiletext text-[14px] font-normal py-[8px]">
+                Choose file...
+              </p>
+              <label
+                htmlFor="file"
+                className="w-[80px] py-[8px] cursor-pointer text-[#FF9900] text-[14px] flex justify-center font-black bg-[#FF9900]/20 rounded-[5px]"
+              >
+                Browse
+              </label>
+              <input
+                type="file"
+                id="file"
+                name="file"
+                accept=".csv"
+                onChange={handleFile}
+                style={{ display: "none" }}
+                ref={fileInputRef}
+              />
+            </div>
+            <img
+              src={folderIcon}
+              alt="folder icon"
+              className="mt-[85px] mb-[87px]"
+              onClick={handleImageClick}
+            />
           </div>
         </div>
       )}

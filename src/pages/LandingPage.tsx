@@ -57,8 +57,13 @@ export default function LandginPage() {
                 className="mb:block dk:hidden mt-[40px]"
               />
               <div className="button w-full mb:flex mb:flex-col mb:items-center dk:items-start">
-                <button className="w-[124px] cursor-pointer mt-[63px] bg-[#251B03] rounded-[8px] py-[12px] text-[#FF9900] text-[18px] font-normal">
-                  Sing Up
+                <button
+                  onClick={() => {
+                    navigate("/roles");
+                  }}
+                  className="w-[124px] cursor-pointer mt-[63px] bg-[#251B03] rounded-[8px] py-[12px] text-[#FF9900] text-[18px] font-normal"
+                >
+                  Sign Up
                 </button>
               </div>
             </div>

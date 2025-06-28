@@ -3,6 +3,8 @@
 
 @theme {
   --color-about: rgba(255, 255, 255, 0.2);
+  --color-choosefile: rgba(224, 230, 237, 0.10)
+  --color-choosefiletext: rgba(255, 255, 255, 0.60)
 
   --shadow-getstarted: 0px 0px 27.587px 0px rgba(0, 0, 0, 0.25);
   --shadow-sort: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
