@@ -12,6 +12,7 @@ import carrotLeft from "../../public/assets/arrowLeft.svg";
 import carrotRight from "../../public/assets/arrowRight.svg";
 import type { TCourierType } from "../Couriertype";
 import chechMark from "../../public/assets/gridicons_checkmark.svg";
+import { set } from "react-hook-form";
 
 export default function Courier() {
   const { role } = useRoleContext();
@@ -23,6 +24,8 @@ export default function Courier() {
   const [sortOpen, setSortOpen] = useState<boolean>(false);
   const [editOpen, setEditOpen] = useState<boolean>(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [messageOpen, setMessageOpen] = useState<boolean>(false);
+  const [personName, setPersonName] = useState<string>("");
 
   const handlePackagesClick = () => {
     setPackagesIsClicked(true);
@@ -77,6 +80,7 @@ export default function Courier() {
     setSortedData(updatedData);
     setEditOpen(false);
   };
+
   return (
     <div className="flex flex-col items-center">
       <div className="navigation w-full py-[13px] px-[35px] flex items-center justify-between bg-[#111111]">
@@ -125,19 +129,19 @@ export default function Courier() {
         <div className="all-packages">
           {packagesIsClicked ? (
             <div className="w-[807px] flex flex-col items-center p-[20px] rounded-[6px] bg-[#111111]">
-              <div className="sort-line flex items-center justify-between w-full">
+              <div className="sort-line relative flex items-center justify-between w-full">
                 <p className="text-white text-[18px] font-semibold">
                   My Packages
                 </p>
                 <div
-                  onClick={() => setSortOpen(true)}
+                  onClick={() => setSortOpen(!sortOpen)}
                   className="sort w-[103px] rounded-[8px] bg-[#343434] flex items-center justify-center cursor-pointer gap-[6px] py-[7px]"
                 >
                   <p className="text-white text-[14px] font-normal">Sort by</p>
                   <img src={arrowDown} alt="arrow down icon" />
                 </div>
                 {sortOpen ? (
-                  <div className="fixed inset-0 z-50 top-55 left-330.5">
+                  <div className="absolute inset-0 z-50 top-10 left-166">
                     <div className="w-[103px] rounded-[8px] bg-[#292929] shadow-sort py-[8px] pl-[8px]">
                       <div className="id flex items-center gap-[3px] cursor-pointer">
                         {selectedSort === "id" && (
@@ -220,7 +224,14 @@ export default function Courier() {
                             {item.phoneNumber}
                           </p>
                         </div>
-                        <div className="message ml-[60px] flex items-center gap-[2px]">
+                        <div
+                          onClick={() => {
+                            setMessageOpen(!messageOpen);
+                            setEditIndex(index);
+                            setPersonName(item.name);
+                          }}
+                          className="message ml-[60px] flex items-center gap-[2px]"
+                        >
                           <img src={messageIcon} alt="message icon " />
                           <p className="text-[#B8B8B8] text-[14px] font-normal">
                             Message
@@ -288,6 +299,66 @@ export default function Courier() {
                     >
                       <p className="text-[12px] font-normal text-[#FFFFFF]">
                         To Deliver
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+              {messageOpen ? (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                  <div className="w-[409px] rounded-[8px] px-[29px] py-[23px] bg-[#111111] flex flex-col items-center">
+                    <p className="text-white text-[18px] font-normal">
+                      Message
+                    </p>
+                    <div className="to-who flex flex-col gap-[5px] w-[352px] mt-[21px]">
+                      <label
+                        htmlFor="name"
+                        className="text-white text-[14px] font-normal"
+                      >
+                        To
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        className="w-full h-[40px] px-[10px] rounded-[6px] bg-[#292929] text-white text-[14px] font-normal"
+                        placeholder={`${personName}`}
+                      />
+                    </div>
+                    <div className="message flex flex-col gap-[5px] w-[352px] mt-[28px]">
+                      <label
+                        htmlFor="message"
+                        className="text-white text-[14px] font-normal"
+                      >
+                        Message
+                      </label>
+                      <textarea
+                        id="message"
+                        className="w-full h-[104px] px-[10px] py-[10px] rounded-[6px] bg-[#292929] text-white text-[14px] font-normal resize-none"
+                      />
+                    </div>
+                    <div className="from flex flex-col gap-[5px] mt-[17px] w-[352px]">
+                      <label
+                        htmlFor="from"
+                        className="text-white text-[14px] font-normal"
+                      >
+                        From
+                      </label>
+                      <input
+                        type="text"
+                        id="from"
+                        className="w-full h-[40px] px-[10px] rounded-[6px] bg-[#292929] text-white text-[14px] font-normal"
+                        placeholder="Courier"
+                      />
+                    </div>
+                    <div className="buttons flex items-center gap-[38px] mt-[21px]">
+                      <button className="bg-[#0C3F25] w-[91px] rounded-[6px] py-[5px] flex justify-center text-[#00AB55] text-[14px] font-normal">
+                        Send
+                      </button>
+                      <p
+                        onClick={() => setMessageOpen(false)}
+                        className="text-white text-[14px] font-normal"
+                      >
+                        Cancel
                       </p>
                     </div>
                   </div>
