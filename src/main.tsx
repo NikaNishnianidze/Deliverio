@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import LandginPage from "./pages/LandingPage";
 import Store from "./pages/Store";
 import Courier from "./pages/Courier";
+import Admin from "./pages/Admin";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: "/courier",
     element: <Courier />,
+  },
+  {
+    path: "/admin",
+    element: <Admin />,
   },
 ]);
 

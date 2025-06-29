@@ -6,7 +6,8 @@
     "amount": "59₾",
     "status": true,
     "address": "Tbilisi str.",
-    "phoneNumber": "555216994"
+    "phoneNumber": "555216994",
+    "store": "QuickMart"
   },
   {
     "id": "02",
@@ -15,7 +16,8 @@
     "amount": "150₾",
     "status": false,
     "address": "Tbilisi str.",
-    "phoneNumber": "555216994"
+    "phoneNumber": "555216994",
+    "store": "Urban Goods"
   },
   {
     "id": "03",
@@ -24,7 +26,8 @@
     "amount": "821₾",
     "status": false,
     "address": "Tbilisi str.",
-    "phoneNumber": "555216994"
+    "phoneNumber": "555216994",
+    "store": "FreshBox"
   },
   {
     "id": "04",
@@ -33,7 +36,8 @@
     "amount": "613₾",
     "status": true,
     "address": "Tbilisi str.",
-    "phoneNumber": "555216994"
+    "phoneNumber": "555216994",
+    "store": "Urban Goods"
   },
   {
     "id": "05",
@@ -42,7 +46,8 @@
     "amount": "61₾",
     "status": true,
     "address": "Tbilisi str.",
-    "phoneNumber": "555216994"
+    "phoneNumber": "555216994",
+    "store": "MegaMart"
   },
   {
     "id": "06",
@@ -51,6 +56,7 @@
     "amount": "93₾",
     "status": false,
     "address": "Tbilisi str.",
-    "phoneNumber": "555216994"
+    "phoneNumber": "555216994",
+    "store": "Swift Supply"
   }
 ]

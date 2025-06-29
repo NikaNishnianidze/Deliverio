@@ -128,6 +128,7 @@ export default function Store() {
           phoneNumber: line[3],
           amount: `${line[4]}₾`,
           status: line[5] === "true",
+          store: line[6] ?? "",
         }));
 
         const updatedStore = [...storeData, ...newOrders];
