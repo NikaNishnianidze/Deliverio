@@ -13,6 +13,9 @@ import * as yup from "yup";
 import chechMark from "../../public/assets/gridicons_checkmark.svg";
 import type { IAdminInputs } from "../AdminInputs";
 import courierData from "../CourierData.json";
+import phoneIcon from "../../public/assets/phone.svg";
+import messageIcon from "../../public/assets/message.svg";
+import editIcon from "../../public/assets/edit.svg";
 
 const schema: yup.ObjectSchema<IAdminInputs> = yup.object({
   buyer: yup.string().required("Buyer is required"),
@@ -50,6 +53,11 @@ export default function Admin() {
   const [selectedCouriers, setSelectedCouriers] = useState<{
     [key: number]: string;
   }>({});
+  const [openStatusEditIndex, setOpenStatusEditIndex] = useState<number | null>(
+    null
+  );
+  const [courierList, setCourierList] = useState(courierData);
+  const [messageOpen, setMessageOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setSortedData(storeData);
@@ -652,123 +660,291 @@ export default function Admin() {
                 </p>
               </div>
               <div className="orders-list w-[655px] rounded-[10px] border-[1px] border-[#343434] mt-[13px] flex flex-col">
-                {courierData.map((order, index) => {
+                {courierList.map((order, index) => {
                   return (
-                    <div className="flex items-center" key={index}>
-                      <div
-                        className="order-number w-[91px] pl-[12px] py-[15px]"
-                        style={{
-                          backgroundColor:
-                            order.status === "Completed"
-                              ? "#00AB55"
-                              : order.status === "Denied-Once"
-                              ? "#FF9900"
-                              : order.status === "Denied-Twice"
-                              ? "#FF0000"
-                              : order.status === "To-Deliver"
-                              ? "#999696"
-                              : "",
-                          borderRadius: index === 0 ? "8px 0 0 0" : "0",
-                          borderEndStartRadius:
-                            index === courierData.length - 1 ? "8px" : "0",
-                        }}
-                      >
-                        <p className="text-white text-[14px] font-semibold">
-                          #{order.id}
-                        </p>
+                    <div className="div flex flex-col" key={index}>
+                      <div className="flex items-center" key={index}>
+                        <div
+                          className="order-number w-[91px] pl-[12px] py-[15px]"
+                          style={{
+                            backgroundColor:
+                              order.status === "Completed"
+                                ? "#00AB55"
+                                : order.status === "Denied-Once"
+                                ? "#FF9900"
+                                : order.status === "Denied-Twice"
+                                ? "#FF0000"
+                                : order.status === "To-Deliver"
+                                ? "#999696"
+                                : "",
+                            borderRadius: index === 0 ? "8px 0 0 0" : "0",
+                            borderEndStartRadius:
+                              index === courierData.length - 1 ? "8px" : "0",
+                          }}
+                        >
+                          <p className="text-white text-[14px] font-semibold">
+                            #{order.id}
+                          </p>
+                        </div>
+                        <div
+                          onClick={() =>
+                            setOpenCourierDropdown(
+                              openCourierDropdown === index ? null : index
+                            )
+                          }
+                          className="relative assigned-courier w-[103px] py-[5px] flex items-center justify-center ml-[20px] gap-[5px] bg-[#343434] rounded-[8px]"
+                        >
+                          <p className="text-white text-[14px] font-normal">
+                            {selectedCouriers[index] || order.name}
+                          </p>
+                          <img src={arrowDown} alt="Arrow down" />
+                          {openCourierDropdown === index && (
+                            <div className="absolute left-0 top-full mt-2 w-[120px] bg-[#292929] rounded-[8px] shadow-sort z-10">
+                              <p
+                                onClick={() => {
+                                  setSelectedCouriers({
+                                    ...selectedCouriers,
+                                    [index]: order.name,
+                                  });
+                                  setOpenCourierDropdown(null);
+                                }}
+                                className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
+                              >
+                                {order.name}
+                              </p>
+                              <p
+                                onClick={() => {
+                                  setSelectedCouriers({
+                                    ...selectedCouriers,
+                                    [index]: "Daviti",
+                                  });
+                                  setOpenCourierDropdown(null);
+                                }}
+                                className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
+                              >
+                                Daviti
+                              </p>
+                              <p
+                                onClick={() => {
+                                  setSelectedCouriers({
+                                    ...selectedCouriers,
+                                    [index]: "Mariami",
+                                  });
+                                  setOpenCourierDropdown(null);
+                                }}
+                                className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
+                              >
+                                Mariami
+                              </p>
+                              <p
+                                onClick={() => {
+                                  setSelectedCouriers({
+                                    ...selectedCouriers,
+                                    [index]: "Nika",
+                                  });
+                                  setOpenCourierDropdown(null);
+                                }}
+                                className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
+                              >
+                                Nika
+                              </p>
+                              <p
+                                onClick={() => {
+                                  setSelectedCouriers({
+                                    ...selectedCouriers,
+                                    [index]: "Nini",
+                                  });
+                                  setOpenCourierDropdown(null);
+                                }}
+                                className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
+                              >
+                                Nini
+                              </p>
+                              <p
+                                onClick={() => {
+                                  setSelectedCouriers({
+                                    ...selectedCouriers,
+                                    [index]: "James",
+                                  });
+                                  setOpenCourierDropdown(null);
+                                }}
+                                className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
+                              >
+                                James
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                        <div className="phoneNumbers flex items-center ml-[53px] gap-[4px]">
+                          <img src={phoneIcon} alt="phone icon" />
+                          <p className="text-[#B8B8B8] text-[14px] font-normal">
+                            {order.phoneNumber}
+                          </p>
+                        </div>
+                        <div
+                          onClick={() => setMessageOpen(true)}
+                          className="message flex items-center gap-[4px] ml-[61.2px]"
+                        >
+                          <img src={messageIcon} alt="message icon" />
+                          <p className="text-[#B8B8B8] text-[14px] font-normal">
+                            Message
+                          </p>
+                        </div>
+                        <div
+                          onClick={() => setOpenStatusEditIndex(index)}
+                          className="edit flex items-center gap-[4px] ml-[36.84px]"
+                        >
+                          <img src={editIcon} alt="edit icon" />
+                          <p className="text-[#B8B8B8] text-[14px] font-normal">
+                            Edit
+                          </p>
+                        </div>
                       </div>
-                      <div
-                        onClick={() =>
-                          setOpenCourierDropdown(
-                            openCourierDropdown === index ? null : index
-                          )
-                        }
-                        className="relative assigned-courier w-[103px] py-[5px] flex items-center justify-center ml-[20px] gap-[5px] bg-[#343434] rounded-[8px]"
-                      >
-                        <p className="text-white text-[14px] font-normal">
-                          {selectedCouriers[index] || order.name}
-                        </p>
-                        <img src={arrowDown} alt="Arrow down" />
-                        {openCourierDropdown === index && (
-                          <div className="absolute left-0 top-full mt-2 w-[120px] bg-[#292929] rounded-[8px] shadow-sort z-10">
-                            <p
-                              onClick={() => {
-                                setSelectedCouriers({
-                                  ...selectedCouriers,
-                                  [index]: order.name,
-                                });
-                                setOpenCourierDropdown(null);
-                              }}
-                              className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
-                            >
-                              {order.name}
+                      {openStatusEditIndex === index && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                          <div className="w-[324px] rounded-[8px] bg-[#111] px-[23px] py-[17px] flex flex-col items-center">
+                            <p className="text-white text-[18px] font-normal">
+                              Change Order Status
                             </p>
-                            <p
-                              onClick={() => {
-                                setSelectedCouriers({
-                                  ...selectedCouriers,
-                                  [index]: "Daviti",
-                                });
-                                setOpenCourierDropdown(null);
-                              }}
-                              className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
+                            <div className="flex flex-col gap-2 mt-4">
+                              {[
+                                "Completed",
+                                "Denied-Once",
+                                "Denied-Twice",
+                                "To-Deliver",
+                              ].map((status) => (
+                                <button
+                                  key={status}
+                                  onClick={() => {
+                                    const updated = [...courierList];
+                                    updated[index] = {
+                                      ...updated[index],
+                                      status,
+                                    };
+                                    setCourierList(updated);
+                                    setOpenStatusEditIndex(null);
+                                  }}
+                                  className="w-[109px] py-[6px] rounded-[28px] text-white"
+                                  style={{
+                                    backgroundColor:
+                                      status === "Completed"
+                                        ? "#0C3F25"
+                                        : status === "Denied-Once"
+                                        ? "#FF9900"
+                                        : status === "Denied-Twice"
+                                        ? "#FF0000"
+                                        : status === "To-Deliver"
+                                        ? "#999696"
+                                        : "",
+                                  }}
+                                >
+                                  {status}
+                                </button>
+                              ))}
+                            </div>
+                            <button
+                              onClick={() => setOpenStatusEditIndex(null)}
+                              className="mt-4 text-white"
                             >
-                              Daviti
-                            </p>
-                            <p
-                              onClick={() => {
-                                setSelectedCouriers({
-                                  ...selectedCouriers,
-                                  [index]: "Mariami",
-                                });
-                                setOpenCourierDropdown(null);
-                              }}
-                              className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
-                            >
-                              Mariami
-                            </p>
-                            <p
-                              onClick={() => {
-                                setSelectedCouriers({
-                                  ...selectedCouriers,
-                                  [index]: "Nika",
-                                });
-                                setOpenCourierDropdown(null);
-                              }}
-                              className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
-                            >
-                              Nika
-                            </p>
-                            <p
-                              onClick={() => {
-                                setSelectedCouriers({
-                                  ...selectedCouriers,
-                                  [index]: "Nini",
-                                });
-                                setOpenCourierDropdown(null);
-                              }}
-                              className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
-                            >
-                              Nini
-                            </p>
-                            <p
-                              onClick={() => {
-                                setSelectedCouriers({
-                                  ...selectedCouriers,
-                                  [index]: "James",
-                                });
-                                setOpenCourierDropdown(null);
-                              }}
-                              className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
-                            >
-                              James
-                            </p>
+                              Cancel
+                            </button>
                           </div>
-                        )}
-                      </div>
+                        </div>
+                      )}
+                      {messageOpen && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10">
+                          <div className="w-[409px] rounded-[8px] py-[23px] px-[28px] flex flex-col items-center bg-[#111111]">
+                            <p className="text-white text-[18px] font-normal">
+                              Message
+                            </p>
+                            <div className="to flex flex-col gap-[5px]">
+                              <label
+                                htmlFor="to"
+                                className="text-white text-[14px] font-normal"
+                              >
+                                To
+                              </label>
+                              <input
+                                type="text"
+                                className="outline-none cursor-pointer w-[352px] text-white py-[6px] pl-[6px] bg-[#343434] rounded-[4px]"
+                                placeholder={order.name}
+                              />
+                            </div>
+                            <div className="message flex flex-col gap-[5px] mt-[28px]">
+                              <label
+                                htmlFor="message"
+                                className="text-white text-[14px] font-normal"
+                              >
+                                Message
+                              </label>
+                              <textarea className="outline-none cursor-pointer text-white h-[104px] w-[352px] py-[6px] pl-[6px] bg-[#343434] rounded-[4px]" />
+                            </div>
+                            <div className="from flex flex-col mt-[28px]">
+                              <label
+                                htmlFor="from"
+                                className="text-white text-[14px] font-normal"
+                              >
+                                From
+                              </label>
+                              <input
+                                type="text"
+                                className="outline-none cursor-pointer w-[352px] text-white py-[6px] pl-[6px] bg-[#343434] rounded-[4px]"
+                                placeholder="Admin"
+                              />
+                            </div>
+                            <div className="buttons flex items-center gap-[38px] mt-[21px]">
+                              <button className="bg-[#0C3F25] w-[91px] rounded-[6px] py-[5px] flex justify-center text-[#00AB55] text-[14px] font-normal">
+                                Send
+                              </button>
+                              <p
+                                onClick={() => setMessageOpen(false)}
+                                className="text-white text-[14px] font-normal"
+                              >
+                                Cancel
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      <div className="divider w-[655px] h-[1px] bg-[#FFFFFF]/20"></div>
                     </div>
                   );
                 })}
+              </div>
+              <div className="last-line flex items-center justify-between mt-[16.33px]">
+                <div className="buttons flex items-center gap-[6px] ">
+                  <div className="prev flex items-center justify-center gap-[4px] py-[10px] w-[70px] rounded-[8px] bg-[#343434]">
+                    <img src={arrowLeft} alt="arrow left icon" />
+                    <p className="text-[12px] text-white font-normal">Prev</p>
+                  </div>
+                  <div className="next flex items-center justify-center gap-[4px] py-[10px] w-[70px] rounded-[8px] bg-[#343434]">
+                    <p className="text-[12px] text-white font-normal">Next</p>
+                    <img src={arrowRight} alt="arrow right icon" />
+                  </div>
+                </div>
+                <div className="status flex items-center gap-[16px]">
+                  <p className="text-white text-[14px] font-normal">Status</p>
+                  <div className="all-status flex items-center gap-[25px]">
+                    <div className="completed flex items-center gap-[6px]">
+                      <div className="circle w-[24px] h-[24px] rounded-[8px] bg-[#00AB55]"></div>
+                      <p className="text-[#00AB55] text-[14px] font-noormal">
+                        Completed
+                      </p>
+                    </div>
+                    <div className="Denied-Once flex items-center gap-[6px]">
+                      <div className="circle w-[24px] h-[24px] rounded-[8px] bg-[#FF9900]"></div>
+                      <p className="text-[#FF9900] text-[14px] font-noormal">
+                        Denied Once
+                      </p>
+                    </div>
+                    <div className="Denied-Twice flex items-center gap-[6px]">
+                      <div className="circle w-[24px] h-[24px] rounded-[8px] bg-[#FF0000]"></div>
+                      <p className="text-[#FF0000] text-[14px] font-noormal">
+                        Denied Twice
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
