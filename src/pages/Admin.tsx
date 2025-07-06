@@ -28,7 +28,7 @@ export default function Admin() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: {},
   } = useForm<IAdminInputs>({
     resolver: yupResolver(schema),
   });
@@ -143,7 +143,7 @@ export default function Admin() {
     setSelectedOrder(updatedOrder);
     setEditOpen(false);
   };
-
+  console.log(sortedData);
   return (
     <div className="flex flex-col items-center">
       <div className="navigation w-full py-[13px] px-[35px] flex items-center justify-between bg-[#111111]">

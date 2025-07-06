@@ -27,7 +27,7 @@ export default function Store() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: {},
   } = useForm<IInputs>({
     resolver: yupResolver(schema),
   });
