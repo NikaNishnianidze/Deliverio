@@ -42,24 +42,39 @@ export default function Admin() {
   const [editOpen, setEditOpen] = useState<boolean>(false);
   const [selectedSort, setSelectedSort] = useState<string>("date");
   const [sortedData, setSortedData] = useState(storeData);
+  const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 
   useEffect(() => {
     setSortedData(storeData);
   }, [storeData]);
+  const getDisplayedData = () => {
+    let data = [...storeData];
+    if (selectedFilter) {
+      data = data.filter(
+        (order) => order.store?.toLowerCase() === selectedFilter.toLowerCase()
+      );
+    }
+    if (selectedSort === "date") {
+      data.sort((a, b) => a.date.localeCompare(b.date));
+    } else if (selectedSort === "store") {
+      data.sort((a, b) => (a.store || "").localeCompare(b.store || ""));
+    } else if (selectedSort === "status") {
+      data.sort((a, b) =>
+        (a.orderStatus || "").localeCompare(b.orderStatus || "")
+      );
+    }
+    return data;
+  };
+
+  const displayedData = getDisplayedData();
   const handleSort = (criteria: string) => {
     setSelectedSort(criteria);
-    const sorted = [...sortedData].sort((a, b) => {
-      if (criteria === "date") {
-        return a.date.localeCompare(b.date);
-      } else if (criteria === "store") {
-        return (a.store || "").localeCompare(b.store || "");
-      } else if (criteria === "status") {
-        return (a.orderStatus || "").localeCompare(b.orderStatus || "");
-      }
-      return 0;
-    });
-    setSortedData(sorted);
     setSortOpen(false);
+  };
+
+  const handleFilter = (storeName: string | null) => {
+    setSelectedFilter(storeName);
+    setFiltersOpen(false);
   };
 
   const handleStoreOrders = () => {
@@ -215,9 +230,49 @@ export default function Admin() {
                   </div>
                 </div>
               </div>
-              {filtersOpen && <div className="absolute "></div>}
+              {filtersOpen && (
+                <div className="absolute z-50 top-[60px] right-6">
+                  <div className="w-[210px] rounded-[8px] bg-[#292929] shadow-sort py-[13px] pl-[8px] flex flex-col gap-2">
+                    <p
+                      onClick={() => handleFilter("")}
+                      className="text-[#ADADAD] text-[14px] font-normal"
+                    >
+                      Store
+                    </p>
+                    <div
+                      className="flex items-center gap-2 cursor-pointer"
+                      onClick={() => handleFilter("Quickmart")}
+                    >
+                      {selectedFilter === "Quickmart" && (
+                        <img src={chechMark} alt="checkmark" />
+                      )}
+                      <span className="text-white text-[14px]">Quickmart</span>
+                    </div>
+                    <div
+                      className="flex items-center gap-2 cursor-pointer"
+                      onClick={() => handleFilter("Urban Goods")}
+                    >
+                      {selectedFilter === "Urban Goods" && (
+                        <img src={chechMark} alt="checkmark" />
+                      )}
+                      <span className="text-white text-[14px]">
+                        Urban Goods
+                      </span>
+                    </div>
+                    <div
+                      className="flex items-center gap-2 cursor-pointer"
+                      onClick={() => handleFilter("MegaMart")}
+                    >
+                      {selectedFilter === "MegaMart" && (
+                        <img src={chechMark} alt="checkmark" />
+                      )}
+                      <span className="text-white text-[14px]">Megamart</span>
+                    </div>
+                  </div>
+                </div>
+              )}
               {sortOpen && (
-                <div className="absolute z-50 top-[40px] right-0">
+                <div className="absolute z-50 top-[60px] right-5">
                   <div className="w-[103px] rounded-[8px] bg-[#292929] shadow-sort py-[8px] pl-[8px] flex flex-col gap-2">
                     <div
                       className="flex items-center gap-2 cursor-pointer"
@@ -505,7 +560,7 @@ export default function Admin() {
                       <p>Status</p>
                     </div>
                   </div>
-                  {sortedData.map((order, index) => {
+                  {displayedData.map((order, index) => {
                     return (
                       <div
                         className="orders flex flex-col items-start cursor-pointer mt-[10px]"
@@ -527,7 +582,7 @@ export default function Admin() {
                           </div>
                           <div className="store">
                             <p className="text-white text-[14px] font-normal">
-                              {order.name}
+                              {order.store}
                             </p>
                           </div>
                           <div
@@ -578,7 +633,13 @@ export default function Admin() {
               )}
             </div>
           )}
-          {ManagePackages && <div></div>}
+          {ManagePackages && (
+            <div className="w-[807px] flex flex-col py-[20px] pl-[20px]">
+              <p className="text-white text-[18px] font-semibold">
+                Manage Packages
+              </p>
+            </div>
+          )}
           {GPS && <div></div>}
         </div>
       </div>
