@@ -6,3 +6,8 @@ interface ICourierType {
 }
 
 export type TCourierType = ICourierType[];
+
+interface ICourierTypeWithDate extends ICourierType {
+  date: string;
+}
+export type TCourierTypeWithDate = ICourierTypeWithDate[];

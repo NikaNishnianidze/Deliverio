@@ -12,7 +12,6 @@ import carrotLeft from "../../public/assets/arrowLeft.svg";
 import carrotRight from "../../public/assets/arrowRight.svg";
 import type { TCourierType } from "../Couriertype";
 import chechMark from "../../public/assets/gridicons_checkmark.svg";
-import { set } from "react-hook-form";
 
 export default function Courier() {
   const { role } = useRoleContext();

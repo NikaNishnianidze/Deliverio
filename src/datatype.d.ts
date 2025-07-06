@@ -7,6 +7,7 @@ interface IStore {
   address: string;
   phoneNumber: string;
   store: string;
+  orderStatus: string;
 }
 
 export type TStore = IStore[];

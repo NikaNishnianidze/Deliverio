@@ -129,6 +129,7 @@ export default function Store() {
           amount: `${line[4]}₾`,
           status: line[5] === "true",
           store: line[6] ?? "",
+          orderStatus: line[7] ?? "",
         }));
 
         const updatedStore = [...storeData, ...newOrders];
