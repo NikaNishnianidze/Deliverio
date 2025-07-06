@@ -12,6 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import chechMark from "../../public/assets/gridicons_checkmark.svg";
 import type { IAdminInputs } from "../AdminInputs";
+import courierData from "../CourierData.json";
 
 const schema: yup.ObjectSchema<IAdminInputs> = yup.object({
   buyer: yup.string().required("Buyer is required"),
@@ -43,6 +44,12 @@ export default function Admin() {
   const [selectedSort, setSelectedSort] = useState<string>("date");
   const [sortedData, setSortedData] = useState(storeData);
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
+  const [openCourierDropdown, setOpenCourierDropdown] = useState<number | null>(
+    null
+  );
+  const [selectedCouriers, setSelectedCouriers] = useState<{
+    [key: number]: string;
+  }>({});
 
   useEffect(() => {
     setSortedData(storeData);
@@ -638,6 +645,131 @@ export default function Admin() {
               <p className="text-white text-[18px] font-semibold">
                 Manage Packages
               </p>
+              <div className="header mt-[43px] w-[660px] py-[10px] pl-[15px] flex items-center gap-[45px] bg-[#858585]/30 rounded-[6px]">
+                <p className="text-white text-[14px] font-normal">Order #</p>
+                <p className="text-white text-[14px] font-normal">
+                  Assigned Courier
+                </p>
+              </div>
+              <div className="orders-list w-[655px] rounded-[10px] border-[1px] border-[#343434] mt-[13px] flex flex-col">
+                {courierData.map((order, index) => {
+                  return (
+                    <div className="flex items-center" key={index}>
+                      <div
+                        className="order-number w-[91px] pl-[12px] py-[15px]"
+                        style={{
+                          backgroundColor:
+                            order.status === "Completed"
+                              ? "#00AB55"
+                              : order.status === "Denied-Once"
+                              ? "#FF9900"
+                              : order.status === "Denied-Twice"
+                              ? "#FF0000"
+                              : order.status === "To-Deliver"
+                              ? "#999696"
+                              : "",
+                          borderRadius: index === 0 ? "8px 0 0 0" : "0",
+                          borderEndStartRadius:
+                            index === courierData.length - 1 ? "8px" : "0",
+                        }}
+                      >
+                        <p className="text-white text-[14px] font-semibold">
+                          #{order.id}
+                        </p>
+                      </div>
+                      <div
+                        onClick={() =>
+                          setOpenCourierDropdown(
+                            openCourierDropdown === index ? null : index
+                          )
+                        }
+                        className="relative assigned-courier w-[103px] py-[5px] flex items-center justify-center ml-[20px] gap-[5px] bg-[#343434] rounded-[8px]"
+                      >
+                        <p className="text-white text-[14px] font-normal">
+                          {selectedCouriers[index] || order.name}
+                        </p>
+                        <img src={arrowDown} alt="Arrow down" />
+                        {openCourierDropdown === index && (
+                          <div className="absolute left-0 top-full mt-2 w-[120px] bg-[#292929] rounded-[8px] shadow-sort z-10">
+                            <p
+                              onClick={() => {
+                                setSelectedCouriers({
+                                  ...selectedCouriers,
+                                  [index]: order.name,
+                                });
+                                setOpenCourierDropdown(null);
+                              }}
+                              className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
+                            >
+                              {order.name}
+                            </p>
+                            <p
+                              onClick={() => {
+                                setSelectedCouriers({
+                                  ...selectedCouriers,
+                                  [index]: "Daviti",
+                                });
+                                setOpenCourierDropdown(null);
+                              }}
+                              className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
+                            >
+                              Daviti
+                            </p>
+                            <p
+                              onClick={() => {
+                                setSelectedCouriers({
+                                  ...selectedCouriers,
+                                  [index]: "Mariami",
+                                });
+                                setOpenCourierDropdown(null);
+                              }}
+                              className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
+                            >
+                              Mariami
+                            </p>
+                            <p
+                              onClick={() => {
+                                setSelectedCouriers({
+                                  ...selectedCouriers,
+                                  [index]: "Nika",
+                                });
+                                setOpenCourierDropdown(null);
+                              }}
+                              className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
+                            >
+                              Nika
+                            </p>
+                            <p
+                              onClick={() => {
+                                setSelectedCouriers({
+                                  ...selectedCouriers,
+                                  [index]: "Nini",
+                                });
+                                setOpenCourierDropdown(null);
+                              }}
+                              className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
+                            >
+                              Nini
+                            </p>
+                            <p
+                              onClick={() => {
+                                setSelectedCouriers({
+                                  ...selectedCouriers,
+                                  [index]: "James",
+                                });
+                                setOpenCourierDropdown(null);
+                              }}
+                              className="text-white text-[14px] px-4 py-2 cursor-pointer hover:bg-[#343434]"
+                            >
+                              James
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
           {GPS && <div></div>}
