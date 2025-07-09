@@ -54,3 +54,10 @@ body {
     background-position: 810px 95px;
   }
 }
+
+.leaflet-tooltip {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}

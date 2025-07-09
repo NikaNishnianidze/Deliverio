@@ -3,6 +3,8 @@ interface ICourierType {
   name: string;
   phoneNumber: string;
   status: strinng;
+  lat?: number;
+  lng?: number;
 }
 
 export type TCourierType = ICourierType[];

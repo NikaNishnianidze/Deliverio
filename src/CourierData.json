@@ -3,36 +3,48 @@
     "id": "01",
     "name": "Giorgi",
     "phoneNumber": "555216994",
-    "status": "Completed"
+    "status": "Completed",
+    "lat": 41.7151,
+    "lng": 44.8271
   },
   {
     "id": "02",
     "name": "Daviti",
     "phoneNumber": "555216994",
-    "status": "Completed"
+    "status": "Completed",
+    "lat": 41.7212,
+    "lng": 44.7832
   },
   {
     "id": "03",
     "name": "Mariami",
     "phoneNumber": "555216994",
-    "status": "Denied-Once"
+    "status": "Denied-Once",
+    "lat": 41.7006,
+    "lng": 44.8015
   },
   {
     "id": "04",
     "name": "Nika",
     "phoneNumber": "555216994",
-    "status": "Denied-Twice"
+    "status": "Denied-Twice",
+    "lat": 41.7282,
+    "lng": 44.7542
   },
   {
     "id": "05",
     "name": "Nini",
     "phoneNumber": "555216994",
-    "status": "Denied-Once"
+    "status": "Denied-Once",
+    "lat": 41.6946,
+    "lng": 44.801
   },
   {
     "id": "06",
     "name": "James",
     "phoneNumber": "555216994",
-    "status": "To-Deliver"
+    "status": "To-Deliver",
+    "lat": 41.7325,
+    "lng": 44.7681
   }
 ]

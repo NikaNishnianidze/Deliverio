@@ -46,7 +46,7 @@ export default function Roles() {
             what’s your <span className="text-[#FFD451]">role</span>
           </p>
         </div>
-        <div className="roles-boxes flex items-center gap-[37.22px] mt-[49px]">
+        <div className="roles-boxes dk:flex dk:items-center dk:flex-row mb:flex mb:flex-col gap-[37.22px] mt-[49px]">
           <div
             onClick={storeChecked}
             className="box1 flex flex-col items-center gap-[20px]"

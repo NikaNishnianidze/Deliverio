@@ -203,7 +203,7 @@ export default function Store() {
                 </p>
               </div>
             </div>
-            <div className="hash mt-[359px]">
+            <div className="hash dk:mt-[359px] mb:mt-5">
               <p className="text-[14px] text-[#858585] font-normal">
                 © Deliverio
               </p>

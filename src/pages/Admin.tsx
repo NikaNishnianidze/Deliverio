@@ -16,6 +16,11 @@ import courierData from "../CourierData.json";
 import phoneIcon from "../../public/assets/phone.svg";
 import messageIcon from "../../public/assets/message.svg";
 import editIcon from "../../public/assets/edit.svg";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import courierIconImg from "../../public/assets/ri_e-bike-2-fill.svg";
+import L from "leaflet";
+import { Tooltip } from "react-leaflet";
 
 const schema: yup.ObjectSchema<IAdminInputs> = yup.object({
   buyer: yup.string().required("Buyer is required"),
@@ -23,6 +28,12 @@ const schema: yup.ObjectSchema<IAdminInputs> = yup.object({
   address: yup.string().required("address is required"),
   phoneNumber: yup.string().required("phone number is required"),
   amount: yup.string().required("amount is required"),
+});
+const courierIcon = new L.Icon({
+  iconUrl: courierIconImg,
+  iconSize: [34, 34],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
 });
 export default function Admin() {
   const {
@@ -948,7 +959,48 @@ export default function Admin() {
               </div>
             </div>
           )}
-          {GPS && <div></div>}
+          {GPS && (
+            <div className="w-full flex justify-center items-center">
+              <div style={{ width: "700px", height: "400px" }}>
+                <MapContainer
+                  center={[41.7151, 44.8271]}
+                  zoom={13}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: "12px",
+                  }}
+                >
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    // @ts-ignore
+                    attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                  {courierList
+                    .filter((courier) => courier.lat && courier.lng)
+                    .map((courier, idx) => (
+                      <Marker
+                        key={courier.id || idx}
+                        position={[courier.lat, courier.lng]}
+                        icon={courierIcon}
+                      >
+                        <Tooltip permanent direction="top" offset={[0, -20]}>
+                          <span
+                            style={{
+                              color: "#111",
+                              fontWeight: 600,
+                              fontSize: 14,
+                            }}
+                          >
+                            {courier.name}
+                          </span>
+                        </Tooltip>
+                      </Marker>
+                    ))}
+                </MapContainer>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -12,6 +12,11 @@ import carrotLeft from "../../public/assets/arrowLeft.svg";
 import carrotRight from "../../public/assets/arrowRight.svg";
 import type { TCourierType } from "../Couriertype";
 import chechMark from "../../public/assets/gridicons_checkmark.svg";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import courierIconImg from "../../public/assets/ri_e-bike-2-fill.svg";
+import L from "leaflet";
+import { Tooltip } from "react-leaflet";
 
 export default function Courier() {
   const { role } = useRoleContext();
@@ -25,7 +30,12 @@ export default function Courier() {
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [messageOpen, setMessageOpen] = useState<boolean>(false);
   const [personName, setPersonName] = useState<string>("");
-
+  const courierIcon = new L.Icon({
+    iconUrl: courierIconImg,
+    iconSize: [34, 34],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32],
+  });
   const handlePackagesClick = () => {
     setPackagesIsClicked(true);
     setMapIsClicked(false);
@@ -403,7 +413,52 @@ export default function Courier() {
               </div>
             </div>
           ) : null}
-          {mapIsClicked ? <div></div> : null}
+          {mapIsClicked && (
+            <div className="w-full flex justify-center items-center">
+              <div style={{ width: "700px", height: "400px" }}>
+                <MapContainer
+                  center={[41.7151, 44.8271]}
+                  zoom={13}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: "12px",
+                  }}
+                >
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    // @ts-ignore
+                    attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                  {sortedData
+                    .filter((courier) => courier.lat && courier.lng)
+                    .map((courier, idx) => (
+                      <Marker
+                        key={courier.id || idx}
+                        position={[
+                          courier.lat as number,
+                          courier.lng as number,
+                        ]}
+                        icon={courierIcon}
+                      >
+                        <Tooltip permanent direction="top" offset={[0, -20]}>
+                          <span
+                            style={{
+                              color: "#111",
+                              fontWeight: 600,
+                              fontSize: 16,
+                              textShadow: "0 0 4px #222",
+                            }}
+                          >
+                            {courier.name}
+                          </span>
+                        </Tooltip>
+                      </Marker>
+                    ))}
+                </MapContainer>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
