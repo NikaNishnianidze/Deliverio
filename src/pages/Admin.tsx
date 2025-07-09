@@ -16,7 +16,7 @@ import courierData from "../CourierData.json";
 import phoneIcon from "../../public/assets/phone.svg";
 import messageIcon from "../../public/assets/message.svg";
 import editIcon from "../../public/assets/edit.svg";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import courierIconImg from "../../public/assets/ri_e-bike-2-fill.svg";
 import L from "leaflet";

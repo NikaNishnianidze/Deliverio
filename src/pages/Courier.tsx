@@ -12,7 +12,7 @@ import carrotLeft from "../../public/assets/arrowLeft.svg";
 import carrotRight from "../../public/assets/arrowRight.svg";
 import type { TCourierType } from "../Couriertype";
 import chechMark from "../../public/assets/gridicons_checkmark.svg";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import courierIconImg from "../../public/assets/ri_e-bike-2-fill.svg";
 import L from "leaflet";
