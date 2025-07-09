@@ -8,9 +8,11 @@ import mobileIcon from "../../public/assets/phoneIcon.svg";
 import emailIcon from "../../public/assets/mail.svg";
 import adressIcon from "../../public/assets/addressi.svg";
 import { useNavigate } from "react-router-dom";
+import { useRoleContext } from "../context/RolesProvider";
 
 export default function LandginPage() {
   const navigate = useNavigate();
+  const { setRole } = useRoleContext();
   return (
     <div className="flex flex-col items-center px-[18px] pt-[16px]">
       <div className="navigation flex items-center w-full justify-between">
@@ -122,7 +124,12 @@ export default function LandginPage() {
                   our intuitive platform.
                 </p>
                 <div className="button flex flex-col items-center dk:items-start">
-                  <button className="mt-[52px] w-[145px] py-[12px] rounded-[14px] bg-[#543200] border-[1px] border-about shadow-getstarted text-[#FF9900] text-[14px] font-semibold">
+                  <button
+                    onClick={() => {
+                      navigate("/signup"), setRole("Store");
+                    }}
+                    className="mt-[52px] w-[145px] py-[12px] rounded-[14px] bg-[#543200] border-[1px] border-about shadow-getstarted text-[#FF9900] text-[14px] font-semibold"
+                  >
                     Get Started
                   </button>
                 </div>
@@ -142,7 +149,12 @@ export default function LandginPage() {
                   accuracy, every time.
                 </p>
                 <div className="button flex flex-col items-center dk:items-start">
-                  <button className="mt-[52px] w-[145px] py-[12px] rounded-[14px] bg-[#543200] border-[1px] border-about shadow-getstarted text-[#FF9900] text-[14px] font-semibold">
+                  <button
+                    onClick={() => {
+                      navigate("/signup"), setRole("Courier");
+                    }}
+                    className="mt-[52px] w-[145px] py-[12px] rounded-[14px] bg-[#543200] border-[1px] border-about shadow-getstarted text-[#FF9900] text-[14px] font-semibold"
+                  >
                     Get Started
                   </button>
                 </div>
@@ -162,7 +174,12 @@ export default function LandginPage() {
                   complete control and real-time updates.
                 </p>
                 <div className="button flex flex-col items-center dk:items-start">
-                  <button className="mt-[52px] w-[145px] py-[12px] rounded-[14px] bg-[#543200] border-[1px] border-about shadow-getstarted text-[#FF9900] text-[14px] font-semibold">
+                  <button
+                    onClick={() => {
+                      navigate("/signup"), setRole("Admin");
+                    }}
+                    className="mt-[52px] w-[145px] py-[12px] rounded-[14px] bg-[#543200] border-[1px] border-about shadow-getstarted text-[#FF9900] text-[14px] font-semibold"
+                  >
                     Get Started
                   </button>
                 </div>
